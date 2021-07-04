@@ -22,15 +22,67 @@ To compile and execute this code, you will need Cmake > 3.1.8, Boost > 1.58, Ope
 
 ## Instructions
 
+### Prerequisite installation
+* Install Cmake, Boost using your software package manager
+* If your gpu is Cuda compatible, follow the detailed installation instructions [here](https://docs.nvidia.com/cuda/cuda-installation-guide-linux/index.html). Or install opencl from your software package manager. Check if opencl is working with clinfo. If you get "number of platform 0", it means opencl is not working correctly. Fix the installation of opencl.
+* OpenMP should be normally installed if not use your package manager to install openmp libraries.
+* Install python packages, specifically numpy as it will be used for building the pyms3d module.
+* Install cmake-gui for building pyms3d.
+
 ### Installing pyms3d
 
-The MS-Complex computation is done using pyms3d. The pyms3d source code is in the ms complex software folder in the repository. To install pyms3d, follow the basic process outlined in the <a href = "https://bitbucket.org/vgl_iisc/mscomplex-3d/wiki/Installation"> the pyms3d installation wiki </a>. 
+The MS-Complex computation is done using pyms3d. The installation instruction of pyms3d are as follows:
 
-Additionally, make sure to set the PYTHON_SITE_PACKAGES_DIR in cmake to the 'Python Routines' folder in the repository. This should ideally put the 'pyms3d.so' file in the 'Python Routines' folder as required.  
+* Clone the repository
+
+```sh
+git clone https://github.com/karran13/Granular-Material-Packing-Analysis 
+```
+
+* Navigate to mscomplex-3d, create build and install directories
+
+```sh
+cd Granular-Material-Packing-Analysis/ms\ complex\ software/mscomplex-3d/
+mkdir build install
+cd build
+```
+
+* Build pyms3d using cmake-gui
+
+```sh
+cmake-gui
+```
+
+1. In the cmake-gui, provide the path for
+ source code ---> absolute path to mscomplex-3d 
+ build directory ---> absolute path to mscomplex-3d/build
+
+2. Press configure to see the default values cmake-gui picked up
+3. Use advance option and change the default values to something similar to the following
+
+![cmake-gui options](./Extras/cmake-gui.png)
+
+4. Important:
+ Check BUILD_PYMS3D, BUILD_TOOL. Press configure to update and display new values.
+ Provide path for MSCOMPLEX3D_INSTALL_DIR, opencl cuda paths, libboost paths, python3 paths.
+ The path to PYTHON_SITE_PACKAGE_DIR should be "Python Routines" in the repository folder (in Granular-Material-Packing-Analysis).
+ Click generate and close cmake-gui.
+
+* From the build directory, execute the following commands:
+
+```sh
+make -j8
+make -j8 install
+```
+
+where 8 is number of processes used to build the pyms3d.
+
+* If everything went alright, you should see 'pyms3d.so' in 'Python Routines' directory.
+* To check whether your installation works, import pyms3d in ipython or jupyter-lab. If import is successful, your installation works.
 
 ### Description: Running the pipeline
 
-The python scripts to run the pipeline can be found in the Python Routines folder. The scripts and their input formats are described below: 
+The python scripts to run the pipeline can be found in the Python Routines folder. You should have all the python packages specified above to run the pipeline successfully. The scripts and their input formats are described below:
 
 #### bd_extraction.py 
 
